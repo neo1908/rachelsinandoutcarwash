@@ -680,7 +680,7 @@
 	<!-- Footer -->
 	<footer>
 		<div class="container">
-			<p>© 2024 Rachel's In & Out Car Wash</p>
+			<p>© 2026 Rachel's In & Out Car Wash</p>
 			<p class="footer-pun">Making the world cleaner, one soft wipe at a time 🧽</p>
 			<p class="footer-tagline">Remember: Life's too short for a dirty car (or a dusty house)!</p>
 			<p class="konami-hint-footer">Psst... try the Konami code 🎮</p>
