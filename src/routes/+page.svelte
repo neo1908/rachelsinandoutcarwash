@@ -2585,7 +2585,10 @@
 		background: rgba(255, 255, 255, 0.2);
 		padding: 15px 30px;
 		border-radius: 15px;
-		display: inline-block;
+		display: block;
+		width: fit-content;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	.counter-label {
