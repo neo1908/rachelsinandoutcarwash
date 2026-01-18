@@ -316,6 +316,170 @@
 		mouseX = e.clientX;
 		mouseY = e.clientY;
 	}
+
+	// Spin the wheel
+	let showWheel = false;
+	let isSpinning = false;
+	let wheelRotation = 0;
+	let wheelResult = '';
+	const wheelPrizes = [
+		"0% Off! (Full Price!)",
+		"A Warm Smile!",
+		"Rachel's Eternal Gratitude",
+		"A High Five (Virtual)",
+		"0.5% Off! (Wow!)",
+		"A Compliment About Your Car",
+		"Free Air (Breathe Deep!)",
+		"A Wink From Rachel"
+	];
+
+	function spinWheel() {
+		if (isSpinning) return;
+		isSpinning = true;
+		wheelResult = '';
+		const spins = 5 + Math.random() * 5;
+		const finalAngle = spins * 360 + Math.random() * 360;
+		wheelRotation = finalAngle;
+
+		setTimeout(() => {
+			const normalizedAngle = finalAngle % 360;
+			const prizeIndex = Math.floor((360 - normalizedAngle + 22.5) / 45) % 8;
+			wheelResult = wheelPrizes[prizeIndex];
+			isSpinning = false;
+
+			if (!achievements.includes('wheel')) {
+				unlockAchievement('wheel', '🎡 Lucky Spinner - You spun the wheel!');
+			}
+		}, 4000);
+	}
+
+	// Live Chat
+	let showChat = false;
+	let chatMessages: { sender: string; text: string }[] = [];
+	let chatInput = '';
+	let isRachelTyping = false;
+	const rachelChatResponses = [
+		"I'm currently polishing a very important doorknob. Can this wait?",
+		"*scrubbing noises* Sorry, what was that? I was too busy being soft.",
+		"That's a great question! The answer is: clean. Always clean.",
+		"I'd love to help but I'm in the middle of apologizing to a bucket.",
+		"Have you tried turning it off and cleaning it again?",
+		"I'm sensing your car needs a wash. Just a feeling.",
+		"Fun fact: I once made a sponge cry tears of joy!",
+		"Hold on, let me consult my collection of squeegees...",
+		"The cleaning spirits are telling me... yes, definitely needs a wash.",
+		"Sorry, I was distracted by how soft I am. What were we talking about?"
+	];
+
+	function sendChatMessage() {
+		if (!chatInput.trim()) return;
+		chatMessages = [...chatMessages, { sender: 'user', text: chatInput }];
+		chatInput = '';
+		isRachelTyping = true;
+
+		setTimeout(() => {
+			const response = rachelChatResponses[Math.floor(Math.random() * rachelChatResponses.length)];
+			chatMessages = [...chatMessages, { sender: 'rachel', text: response }];
+			isRachelTyping = false;
+		}, 1500 + Math.random() * 1500);
+
+		if (!achievements.includes('chat')) {
+			unlockAchievement('chat', '💬 Chatty Cathy - You chatted with Rachel!');
+		}
+	}
+
+	// Dirty Car Detector
+	let showDirtyDetector = false;
+	let carAnalysisResult = '';
+	let isAnalyzing = false;
+	const dirtyResults = [
+		"EXTREMELY DIRTY - Rachel is deeply concerned.",
+		"CATASTROPHICALLY FILTHY - Rachel needs a moment.",
+		"DIRT LEVEL: YES - Please book immediately.",
+		"SO DIRTY - Rachel's softness sensors are overwhelmed.",
+		"MAXIMUM GRIME DETECTED - This is a cleaning emergency.",
+		"UNACCEPTABLY DUSTY - Rachel is already preparing an apology.",
+		"CRITICAL DIRT ALERT - Have you considered a new car? (Just kidding, we'll clean it.)"
+	];
+
+	function analyzeCarDirtiness() {
+		isAnalyzing = true;
+		carAnalysisResult = '';
+
+		setTimeout(() => {
+			carAnalysisResult = dirtyResults[Math.floor(Math.random() * dirtyResults.length)];
+			isAnalyzing = false;
+
+			if (!achievements.includes('detector')) {
+				unlockAchievement('detector', '🔍 Dirt Detective - You used the detector!');
+			}
+		}, 2500);
+	}
+
+	// Blog posts
+	const blogPosts = [
+		{
+			title: "Top 10 Things I've Apologized To This Week",
+			date: "January 15, 2026",
+			excerpt: "From squeegees to soap dispensers, no cleaning tool goes un-thanked in my world...",
+			content: "1. The mop (for leaning it at a weird angle)\n2. A sponge (squeezed too hard)\n3. The bucket (accidentally kicked)\n4. Three separate microfiber cloths\n5. A customer's wing mirror (for touching it)\n6. The soap dispenser (it looked sad)\n7. A leaf that landed on a car I'd just washed\n8. The vacuum cleaner (for not using it enough)\n9. A puddle (for stepping in it)\n10. This list (for not including more items)"
+		},
+		{
+			title: "My Journey to Maximum Softness",
+			date: "January 10, 2026",
+			excerpt: "They said softness was a weakness. I said 'watch me clean this car without a single scratch'...",
+			content: "It all started when I realized that being gentle isn't a weakness - it's a superpower. While other car washes were scratching paint left and right, I was out here giving cars the spa treatment they deserved. Now look at me: 100% softness rating, zero scratches ever. Who's laughing now? (Me, softly, so as not to disturb anyone.)"
+		},
+		{
+			title: "Why I Talk to Sponges (And You Should Too)",
+			date: "January 5, 2026",
+			excerpt: "A deep dive into the therapeutic benefits of sponge conversation...",
+			content: "Sponges are excellent listeners. They absorb everything - including your feelings. I've found that talking to my sponges before a big cleaning job really helps me center myself. Sure, people look at me weird, but those people have dirty cars and judgmental attitudes. My sponges and I don't need that negativity."
+		}
+	];
+	let selectedBlogPost: typeof blogPosts[0] | null = null;
+
+	// Gift Cards
+	let showGiftCard = false;
+	let giftCardRecipient = '';
+	let giftCardMessage = '';
+	let giftCardGenerated = false;
+
+	// Merch Store
+	const merchItems = [
+		{ name: "\"I Survived Rachel's Softness\" T-Shirt", price: "£25", status: "SOLD OUT", emoji: "👕" },
+		{ name: "\"100% Soft\" Coffee Mug", price: "£15", status: "SOLD OUT", emoji: "☕" },
+		{ name: "Rachel's Signature Sponge", price: "£50", status: "SOLD OUT", emoji: "🧽" },
+		{ name: "\"Squeaky Clean\" Bumper Sticker", price: "£5", status: "SOLD OUT", emoji: "🚗" },
+		{ name: "Limited Edition Bubble Hoodie", price: "£45", status: "SOLD OUT", emoji: "🫧" },
+		{ name: "\"Ask Me About My Softness\" Cap", price: "£20", status: "SOLD OUT", emoji: "🧢" }
+	];
+
+	// Before/After Gallery
+	const beforeAfterImages = [
+		{ before: "🚗💩", after: "🚗✨", description: "The Classic Transformation" },
+		{ before: "🚙🍂🍂🍂", after: "🚙🌟", description: "Autumn Special" },
+		{ before: "🚕🐦💩", after: "🚕💎", description: "Bird Incident Recovery" },
+		{ before: "🚗😢", after: "🚗😍", description: "Emotional Support Wash" }
+	];
+
+	// Anniversary Counter - Set your actual date here!
+	const startDate = new Date('2023-06-15'); // Change this to your real anniversary date!
+	function getDaysSinceStart(): number {
+		const now = new Date();
+		const diff = now.getTime() - startDate.getTime();
+		return Math.floor(diff / (1000 * 60 * 60 * 24));
+	}
+
+	// Secret Love Note - shown when all achievements unlocked
+	let showLoveNote = false;
+	const totalAchievements = 11; // Updated count with new achievements
+
+	$: if (achievements.length >= totalAchievements && !showLoveNote) {
+		setTimeout(() => {
+			showLoveNote = true;
+		}, 1000);
+	}
 </script>
 
 <svelte:window on:mousemove={handleMouseMove} />
@@ -363,6 +527,11 @@
 			</h1>
 			<p class="tagline">Quick cleaning with a gentle touch!</p>
 			<p class="subtitle">Now offering household services too!</p>
+			<div class="anniversary-counter">
+				<span class="counter-label">Rachel has been soft for</span>
+				<span class="counter-number">{getDaysSinceStart()}</span>
+				<span class="counter-label">days</span>
+			</div>
 			<div class="hero-bubbles">
 				<span class="hero-bubble">🫧</span>
 				<span class="hero-bubble delay-1">🫧</span>
@@ -605,6 +774,115 @@
 		</div>
 	</section>
 
+	<!-- Spin the Wheel -->
+	<section class="wheel-section">
+		<div class="container">
+			<h2>Spin for a Discount! 🎡</h2>
+			<p class="wheel-intro">Try your luck! Every spin is a winner!*</p>
+			<button class="spin-trigger-btn" on:click={() => showWheel = true}>Open the Wheel!</button>
+			<p class="wheel-disclaimer">*Prizes may not include actual discounts</p>
+		</div>
+	</section>
+
+	<!-- Dirty Car Detector -->
+	<section class="detector-section">
+		<div class="container">
+			<h2>Dirty Car Detector 🔍</h2>
+			<p class="detector-intro">Upload a photo of your car and let Rachel's advanced sensors analyze it!</p>
+			<div class="detector-card">
+				<div class="upload-area" on:click={analyzeCarDirtiness} on:keypress={(e) => e.key === 'Enter' && analyzeCarDirtiness()} role="button" tabindex="0">
+					<span class="upload-icon">📸</span>
+					<p>Click to "Upload" Your Car Photo</p>
+					<p class="upload-hint">(We definitely analyze it very scientifically)</p>
+				</div>
+				{#if isAnalyzing}
+					<div class="analyzing">
+						<div class="analyzing-spinner"></div>
+						<p>Rachel is squinting at your car...</p>
+					</div>
+				{/if}
+				{#if carAnalysisResult}
+					<div class="analysis-result">
+						<p class="result-label">ANALYSIS COMPLETE:</p>
+						<p class="result-text">{carAnalysisResult}</p>
+						<button class="book-btn" on:click={() => showBookingForm = true}>Book Emergency Clean!</button>
+					</div>
+				{/if}
+			</div>
+		</div>
+	</section>
+
+	<!-- Rachel's Blog -->
+	<section class="blog-section">
+		<div class="container">
+			<h2>Rachel's Blog 📝</h2>
+			<p class="blog-intro">Thoughts, musings, and apologies from the world's softest cleaner</p>
+			<div class="blog-grid">
+				{#each blogPosts as post}
+					<div class="blog-card" on:click={() => selectedBlogPost = post} on:keypress={(e) => e.key === 'Enter' && (selectedBlogPost = post)} role="button" tabindex="0">
+						<h3>{post.title}</h3>
+						<p class="blog-date">{post.date}</p>
+						<p class="blog-excerpt">{post.excerpt}</p>
+						<span class="read-more">Read More →</span>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</section>
+
+	<!-- Before/After Gallery -->
+	<section class="gallery-section">
+		<div class="container">
+			<h2>Before & After Gallery 📸</h2>
+			<p class="gallery-intro">Witness the transformative power of Rachel's softness</p>
+			<div class="gallery-grid">
+				{#each beforeAfterImages as item}
+					<div class="gallery-card">
+						<div class="gallery-before">
+							<span class="gallery-label">BEFORE</span>
+							<span class="gallery-emoji">{item.before}</span>
+						</div>
+						<div class="gallery-arrow">→</div>
+						<div class="gallery-after">
+							<span class="gallery-label">AFTER</span>
+							<span class="gallery-emoji">{item.after}</span>
+						</div>
+						<p class="gallery-description">{item.description}</p>
+					</div>
+				{/each}
+			</div>
+			<p class="gallery-note">*Results are 100% real and definitely not just emojis</p>
+		</div>
+	</section>
+
+	<!-- Merch Store -->
+	<section class="merch-section">
+		<div class="container">
+			<h2>Rachel's Merch Store 🛍️</h2>
+			<p class="merch-intro">Show your support with official Rachel's In & Out merchandise!</p>
+			<div class="merch-grid">
+				{#each merchItems as item}
+					<div class="merch-card">
+						<span class="merch-emoji">{item.emoji}</span>
+						<h3>{item.name}</h3>
+						<p class="merch-price">{item.price}</p>
+						<span class="sold-out-badge">{item.status}</span>
+					</div>
+				{/each}
+			</div>
+			<p class="merch-note">Everything is perpetually sold out due to overwhelming demand. (Rachel made one of each and kept them all.)</p>
+		</div>
+	</section>
+
+	<!-- Gift Cards -->
+	<section class="giftcard-section">
+		<div class="container">
+			<h2>Gift Cards 🎁</h2>
+			<p class="giftcard-intro">Give the gift of Rachel's softness!</p>
+			<button class="giftcard-btn" on:click={() => showGiftCard = true}>Create a Gift Card</button>
+		</div>
+	</section>
+
 	<!-- Call to Action -->
 	<section class="cta">
 		<div class="container">
@@ -672,8 +950,39 @@
 						<span class="badge-hint">Explore the FAQs</span>
 					{/if}
 				</div>
+				<div class="achievement-badge" class:unlocked={achievements.includes('wheel')}>
+					<span class="badge-icon">🎡</span>
+					<span class="badge-name">Lucky Spinner</span>
+					{#if !achievements.includes('wheel')}
+						<span class="badge-hint">Spin the wheel</span>
+					{/if}
+				</div>
+				<div class="achievement-badge" class:unlocked={achievements.includes('chat')}>
+					<span class="badge-icon">💬</span>
+					<span class="badge-name">Chatty Cathy</span>
+					{#if !achievements.includes('chat')}
+						<span class="badge-hint">Chat with Rachel</span>
+					{/if}
+				</div>
+				<div class="achievement-badge" class:unlocked={achievements.includes('detector')}>
+					<span class="badge-icon">🔍</span>
+					<span class="badge-name">Dirt Detective</span>
+					{#if !achievements.includes('detector')}
+						<span class="badge-hint">Use the detector</span>
+					{/if}
+				</div>
+				<div class="achievement-badge" class:unlocked={achievements.includes('giftcard')}>
+					<span class="badge-icon">🎁</span>
+					<span class="badge-name">Generous Soul</span>
+					{#if !achievements.includes('giftcard')}
+						<span class="badge-hint">Create a gift card</span>
+					{/if}
+				</div>
 			</div>
-			<p class="achievements-count">Unlocked: {achievements.length} / 7</p>
+			<p class="achievements-count">Unlocked: {achievements.length} / {totalAchievements}</p>
+			{#if achievements.length >= totalAchievements}
+				<p class="all-achievements">🎉 You've unlocked everything! A special surprise awaits... 🎉</p>
+			{/if}
 		</div>
 	</section>
 
@@ -732,6 +1041,147 @@
 		<div class="achievement-toast">
 			<p>🏆 Achievement Unlocked!</p>
 			<p class="achievement-name">{currentAchievement}</p>
+		</div>
+	{/if}
+
+	<!-- Spin the Wheel Modal -->
+	{#if showWheel}
+		<div class="modal-overlay" on:click={() => showWheel = false} on:keypress={(e) => e.key === 'Escape' && (showWheel = false)} role="button" tabindex="0">
+			<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+			<div class="modal wheel-modal" on:click|stopPropagation role="dialog" aria-modal="true">
+				<h2>🎡 Spin to Win! 🎡</h2>
+				<div class="wheel-container">
+					<div class="wheel" style="transform: rotate({wheelRotation}deg)">
+						{#each wheelPrizes as prize, i}
+							<div class="wheel-segment" style="transform: rotate({i * 45}deg)">
+								<span>{prize}</span>
+							</div>
+						{/each}
+					</div>
+					<div class="wheel-pointer">▼</div>
+				</div>
+				{#if wheelResult}
+					<div class="wheel-result">
+						<p>🎉 YOU WON: 🎉</p>
+						<p class="prize-text">{wheelResult}</p>
+					</div>
+				{/if}
+				<button class="spin-btn" on:click={spinWheel} disabled={isSpinning}>
+					{isSpinning ? 'Spinning...' : 'SPIN!'}
+				</button>
+				<button class="close-btn" on:click={() => showWheel = false}>×</button>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Gift Card Modal -->
+	{#if showGiftCard}
+		<div class="modal-overlay" on:click={() => { showGiftCard = false; giftCardGenerated = false; }} on:keypress={(e) => e.key === 'Escape' && (showGiftCard = false)} role="button" tabindex="0">
+			<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+			<div class="modal giftcard-modal" on:click|stopPropagation role="dialog" aria-modal="true">
+				{#if !giftCardGenerated}
+					<h2>🎁 Create a Gift Card</h2>
+					<form on:submit|preventDefault={() => { giftCardGenerated = true; if (!achievements.includes('giftcard')) unlockAchievement('giftcard', '🎁 Generous Soul - You created a gift card!'); }}>
+						<div class="form-group">
+							<label for="recipient">Recipient's Name</label>
+							<input type="text" id="recipient" bind:value={giftCardRecipient} required placeholder="Lucky person's name" />
+						</div>
+						<div class="form-group">
+							<label for="message">Personal Message</label>
+							<textarea id="message" bind:value={giftCardMessage} placeholder="You deserve to be clean!"></textarea>
+						</div>
+						<button type="submit" class="submit-btn">Generate Gift Card!</button>
+					</form>
+				{:else}
+					<div class="gift-card-preview">
+						<div class="gift-card-inner">
+							<h3>🫧 Rachel's In & Out Car Wash 🫧</h3>
+							<p class="gift-amount">ONE FREE COMPLIMENT</p>
+							<p class="gift-to">To: {giftCardRecipient || 'Someone Special'}</p>
+							<p class="gift-message">"{giftCardMessage || 'You deserve to be pampered!'}"</p>
+							<p class="gift-from">With love and softness,<br/>Rachel</p>
+							<p class="gift-disclaimer">*Redeemable for one (1) genuine compliment about your car, your outfit, or your life choices. Not valid for actual cleaning services. Rachel reserves the right to compliment excessively.</p>
+						</div>
+					</div>
+					<button class="submit-btn" on:click={() => window.print()}>Print Gift Card</button>
+				{/if}
+				<button class="close-btn" on:click={() => { showGiftCard = false; giftCardGenerated = false; }}>×</button>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Blog Post Modal -->
+	{#if selectedBlogPost}
+		<div class="modal-overlay" on:click={() => selectedBlogPost = null} on:keypress={(e) => e.key === 'Escape' && (selectedBlogPost = null)} role="button" tabindex="0">
+			<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+			<div class="modal blog-modal" on:click|stopPropagation role="dialog" aria-modal="true">
+				<h2>{selectedBlogPost.title}</h2>
+				<p class="blog-post-date">{selectedBlogPost.date}</p>
+				<div class="blog-post-content">
+					<p>{selectedBlogPost.content}</p>
+				</div>
+				<p class="blog-signature">- Rachel 🫧</p>
+				<button class="close-btn" on:click={() => selectedBlogPost = null}>×</button>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Secret Love Note Modal -->
+	{#if showLoveNote}
+		<div class="modal-overlay love-note-overlay" on:click={() => showLoveNote = false} on:keypress={(e) => e.key === 'Escape' && (showLoveNote = false)} role="button" tabindex="0">
+			<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+			<div class="modal love-note-modal" on:click|stopPropagation role="dialog" aria-modal="true">
+				<div class="love-note-content">
+					<h2>💖 You Found the Secret! 💖</h2>
+					<p class="love-note-text">
+						Congratulations on unlocking all the achievements!
+					</p>
+					<p class="love-note-text">
+						This silly website was made with love, just for you.
+					</p>
+					<p class="love-note-text">
+						You're my favourite person to be soft with. 🫧
+					</p>
+					<p class="love-note-signature">
+						Love always,<br/>
+						Your very own car wash operator 💕
+					</p>
+				</div>
+				<button class="close-btn" on:click={() => showLoveNote = false}>×</button>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Floating Chat Widget -->
+	<button class="chat-bubble" on:click={() => showChat = !showChat} title="Chat with Rachel">
+		💬
+	</button>
+
+	{#if showChat}
+		<div class="chat-window">
+			<div class="chat-header">
+				<span>Chat with Rachel 🧽</span>
+				<button class="chat-close" on:click={() => showChat = false}>×</button>
+			</div>
+			<div class="chat-messages">
+				{#if chatMessages.length === 0}
+					<p class="chat-welcome">Hi! Rachel here. I'm probably cleaning something, but go ahead and type!</p>
+				{/if}
+				{#each chatMessages as msg}
+					<div class="chat-message" class:user={msg.sender === 'user'} class:rachel={msg.sender === 'rachel'}>
+						{msg.text}
+					</div>
+				{/each}
+				{#if isRachelTyping}
+					<div class="chat-message rachel typing">
+						<span class="typing-dots">...</span>
+					</div>
+				{/if}
+			</div>
+			<form class="chat-input-form" on:submit|preventDefault={sendChatMessage}>
+				<input type="text" bind:value={chatInput} placeholder="Type a message..." class="chat-input" />
+				<button type="submit" class="chat-send">Send</button>
+			</form>
 		</div>
 	{/if}
 </div>
@@ -2129,6 +2579,829 @@
 		}
 	}
 
+	/* Anniversary Counter */
+	.anniversary-counter {
+		margin-top: 20px;
+		background: rgba(255, 255, 255, 0.2);
+		padding: 15px 30px;
+		border-radius: 15px;
+		display: inline-block;
+	}
+
+	.counter-label {
+		display: block;
+		font-size: 0.9rem;
+		opacity: 0.9;
+	}
+
+	.counter-number {
+		display: block;
+		font-family: 'Fredoka', sans-serif;
+		font-size: 3rem;
+		font-weight: 700;
+	}
+
+	/* Wheel Section */
+	.wheel-section {
+		padding: 80px 0;
+		background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+		position: relative;
+		z-index: 1;
+		text-align: center;
+	}
+
+	.wheel-section h2 {
+		font-family: 'Fredoka', sans-serif;
+		font-size: clamp(2rem, 6vw, 3rem);
+		color: #e65100;
+		margin-bottom: 20px;
+	}
+
+	.wheel-intro {
+		color: #bf360c;
+		font-size: 1.1rem;
+		margin-bottom: 30px;
+	}
+
+	.spin-trigger-btn {
+		background: linear-gradient(135deg, #ff9800, #f57c00);
+		color: white;
+		border: none;
+		padding: 18px 50px;
+		border-radius: 50px;
+		font-family: 'Fredoka', sans-serif;
+		font-size: 1.3rem;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
+	}
+
+	.spin-trigger-btn:hover {
+		transform: translateY(-5px) scale(1.05);
+	}
+
+	.wheel-disclaimer {
+		margin-top: 20px;
+		font-size: 0.85rem;
+		color: #bf360c;
+		font-style: italic;
+	}
+
+	/* Wheel Modal */
+	.wheel-modal {
+		text-align: center;
+		max-width: 450px;
+	}
+
+	.wheel-container {
+		position: relative;
+		width: 300px;
+		height: 300px;
+		margin: 30px auto;
+	}
+
+	.wheel {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		background: conic-gradient(
+			#ff6b6b 0deg 45deg,
+			#4ecdc4 45deg 90deg,
+			#ffe66d 90deg 135deg,
+			#95e1d3 135deg 180deg,
+			#f38181 180deg 225deg,
+			#aa96da 225deg 270deg,
+			#fcbad3 270deg 315deg,
+			#a8d8ea 315deg 360deg
+		);
+		transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+	}
+
+	.wheel-segment {
+		position: absolute;
+		width: 50%;
+		height: 50%;
+		top: 0;
+		left: 50%;
+		transform-origin: 0% 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.wheel-segment span {
+		transform: rotate(67.5deg) translateY(-30px);
+		font-size: 0.6rem;
+		font-weight: 600;
+		color: #333;
+		text-align: center;
+		width: 80px;
+	}
+
+	.wheel-pointer {
+		position: absolute;
+		top: -15px;
+		left: 50%;
+		transform: translateX(-50%);
+		font-size: 2rem;
+		color: #e91e63;
+		z-index: 10;
+		filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+	}
+
+	.wheel-result {
+		margin: 20px 0;
+		padding: 20px;
+		background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+		border-radius: 15px;
+	}
+
+	.prize-text {
+		font-family: 'Fredoka', sans-serif;
+		font-size: 1.3rem;
+		color: #0277bd;
+		margin-top: 10px;
+	}
+
+	.spin-btn {
+		background: linear-gradient(135deg, #4fc3f7, #03a9f4);
+		color: white;
+		border: none;
+		padding: 15px 50px;
+		border-radius: 50px;
+		font-family: 'Fredoka', sans-serif;
+		font-size: 1.3rem;
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.spin-btn:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+	}
+
+	/* Detector Section */
+	.detector-section {
+		padding: 80px 0;
+		background: linear-gradient(180deg, #ffe0b2, #ffcc80);
+		position: relative;
+		z-index: 1;
+	}
+
+	.detector-section h2 {
+		font-family: 'Fredoka', sans-serif;
+		font-size: clamp(2rem, 6vw, 3rem);
+		text-align: center;
+		color: #e65100;
+		margin-bottom: 20px;
+	}
+
+	.detector-intro {
+		text-align: center;
+		color: #bf360c;
+		font-size: 1.1rem;
+		margin-bottom: 40px;
+	}
+
+	.detector-card {
+		max-width: 500px;
+		margin: 0 auto;
+		background: white;
+		padding: 40px;
+		border-radius: 20px;
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+	}
+
+	.upload-area {
+		border: 3px dashed #ffcc80;
+		border-radius: 15px;
+		padding: 40px;
+		text-align: center;
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.upload-area:hover {
+		border-color: #ff9800;
+		background: #fff8e1;
+	}
+
+	.upload-icon {
+		font-size: 4rem;
+		display: block;
+		margin-bottom: 15px;
+	}
+
+	.upload-hint {
+		font-size: 0.85rem;
+		color: #90a4ae;
+		font-style: italic;
+	}
+
+	.analyzing {
+		margin-top: 30px;
+		text-align: center;
+	}
+
+	.analyzing-spinner {
+		width: 50px;
+		height: 50px;
+		border: 4px solid #e0e0e0;
+		border-top-color: #ff9800;
+		border-radius: 50%;
+		margin: 0 auto 15px;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	.analysis-result {
+		margin-top: 30px;
+		text-align: center;
+	}
+
+	.result-label {
+		font-weight: 600;
+		color: #e65100;
+		margin-bottom: 10px;
+	}
+
+	.result-text {
+		font-family: 'Fredoka', sans-serif;
+		font-size: 1.3rem;
+		color: #d32f2f;
+		padding: 20px;
+		background: #ffebee;
+		border-radius: 10px;
+		margin-bottom: 20px;
+	}
+
+	/* Blog Section */
+	.blog-section {
+		padding: 80px 0;
+		background: linear-gradient(180deg, #ffcc80, #fff9c4);
+		position: relative;
+		z-index: 1;
+	}
+
+	.blog-section h2 {
+		font-family: 'Fredoka', sans-serif;
+		font-size: clamp(2rem, 6vw, 3rem);
+		text-align: center;
+		color: #f57c00;
+		margin-bottom: 15px;
+	}
+
+	.blog-intro {
+		text-align: center;
+		color: #ef6c00;
+		font-size: 1.1rem;
+		margin-bottom: 40px;
+	}
+
+	.blog-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 30px;
+	}
+
+	.blog-card {
+		background: white;
+		padding: 30px;
+		border-radius: 20px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.blog-card:hover {
+		transform: translateY(-10px);
+		box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+	}
+
+	.blog-card h3 {
+		font-family: 'Fredoka', sans-serif;
+		color: #f57c00;
+		margin-bottom: 10px;
+	}
+
+	.blog-date {
+		font-size: 0.85rem;
+		color: #90a4ae;
+		margin-bottom: 15px;
+	}
+
+	.blog-excerpt {
+		color: #546e7a;
+		line-height: 1.6;
+		margin-bottom: 15px;
+	}
+
+	.read-more {
+		color: #ff9800;
+		font-weight: 600;
+	}
+
+	.blog-modal {
+		max-width: 600px;
+	}
+
+	.blog-post-date {
+		text-align: center;
+		color: #90a4ae;
+		margin-bottom: 20px;
+	}
+
+	.blog-post-content {
+		background: #f5f5f5;
+		padding: 25px;
+		border-radius: 15px;
+		white-space: pre-line;
+		line-height: 1.8;
+		color: #37474f;
+	}
+
+	.blog-signature {
+		text-align: right;
+		margin-top: 20px;
+		font-style: italic;
+		color: #0288d1;
+	}
+
+	/* Gallery Section */
+	.gallery-section {
+		padding: 80px 0;
+		background: linear-gradient(180deg, #fff9c4, #e1f5fe);
+		position: relative;
+		z-index: 1;
+	}
+
+	.gallery-section h2 {
+		font-family: 'Fredoka', sans-serif;
+		font-size: clamp(2rem, 6vw, 3rem);
+		text-align: center;
+		color: #0288d1;
+		margin-bottom: 15px;
+	}
+
+	.gallery-intro {
+		text-align: center;
+		color: #0277bd;
+		font-size: 1.1rem;
+		margin-bottom: 40px;
+	}
+
+	.gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 30px;
+	}
+
+	.gallery-card {
+		background: white;
+		padding: 30px;
+		border-radius: 20px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+		text-align: center;
+	}
+
+	.gallery-before, .gallery-after {
+		display: inline-block;
+		padding: 20px;
+		border-radius: 15px;
+		margin: 10px;
+	}
+
+	.gallery-before {
+		background: #ffebee;
+	}
+
+	.gallery-after {
+		background: #e8f5e9;
+	}
+
+	.gallery-label {
+		display: block;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: #90a4ae;
+		margin-bottom: 10px;
+	}
+
+	.gallery-emoji {
+		font-size: 3rem;
+	}
+
+	.gallery-arrow {
+		font-size: 2rem;
+		color: #4fc3f7;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.gallery-description {
+		margin-top: 15px;
+		font-weight: 600;
+		color: #0277bd;
+	}
+
+	.gallery-note {
+		text-align: center;
+		margin-top: 30px;
+		font-size: 0.85rem;
+		color: #90a4ae;
+		font-style: italic;
+	}
+
+	/* Merch Section */
+	.merch-section {
+		padding: 80px 0;
+		background: linear-gradient(180deg, #e1f5fe, #e8eaf6);
+		position: relative;
+		z-index: 1;
+	}
+
+	.merch-section h2 {
+		font-family: 'Fredoka', sans-serif;
+		font-size: clamp(2rem, 6vw, 3rem);
+		text-align: center;
+		color: #5e35b1;
+		margin-bottom: 15px;
+	}
+
+	.merch-intro {
+		text-align: center;
+		color: #7e57c2;
+		font-size: 1.1rem;
+		margin-bottom: 40px;
+	}
+
+	.merch-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 25px;
+	}
+
+	.merch-card {
+		background: white;
+		padding: 25px;
+		border-radius: 20px;
+		text-align: center;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+		position: relative;
+		opacity: 0.8;
+	}
+
+	.merch-emoji {
+		font-size: 3rem;
+		display: block;
+		margin-bottom: 15px;
+	}
+
+	.merch-card h3 {
+		font-family: 'Fredoka', sans-serif;
+		color: #5e35b1;
+		font-size: 1rem;
+		margin-bottom: 10px;
+	}
+
+	.merch-price {
+		font-family: 'Fredoka', sans-serif;
+		font-size: 1.5rem;
+		color: #7e57c2;
+		margin-bottom: 10px;
+	}
+
+	.sold-out-badge {
+		display: inline-block;
+		background: #e91e63;
+		color: white;
+		padding: 5px 15px;
+		border-radius: 20px;
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+
+	.merch-note {
+		text-align: center;
+		margin-top: 30px;
+		font-size: 0.9rem;
+		color: #90a4ae;
+		font-style: italic;
+	}
+
+	/* Gift Card Section */
+	.giftcard-section {
+		padding: 80px 0;
+		background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+		position: relative;
+		z-index: 1;
+		text-align: center;
+	}
+
+	.giftcard-section h2 {
+		font-family: 'Fredoka', sans-serif;
+		font-size: clamp(2rem, 6vw, 3rem);
+		color: #c2185b;
+		margin-bottom: 15px;
+	}
+
+	.giftcard-intro {
+		color: #ad1457;
+		font-size: 1.1rem;
+		margin-bottom: 30px;
+	}
+
+	.giftcard-btn {
+		background: linear-gradient(135deg, #e91e63, #c2185b);
+		color: white;
+		border: none;
+		padding: 18px 50px;
+		border-radius: 50px;
+		font-family: 'Fredoka', sans-serif;
+		font-size: 1.3rem;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		box-shadow: 0 10px 30px rgba(233, 30, 99, 0.4);
+	}
+
+	.giftcard-btn:hover {
+		transform: translateY(-5px) scale(1.05);
+	}
+
+	.giftcard-modal {
+		max-width: 550px;
+	}
+
+	.form-group textarea {
+		width: 100%;
+		padding: 15px;
+		border: 2px solid #e0e0e0;
+		border-radius: 10px;
+		font-size: 1rem;
+		font-family: 'Poppins', sans-serif;
+		resize: vertical;
+		min-height: 100px;
+	}
+
+	.gift-card-preview {
+		margin: 20px 0;
+	}
+
+	.gift-card-inner {
+		background: linear-gradient(135deg, #4fc3f7, #03a9f4);
+		color: white;
+		padding: 30px;
+		border-radius: 20px;
+		text-align: center;
+	}
+
+	.gift-card-inner h3 {
+		font-family: 'Fredoka', sans-serif;
+		font-size: 1.5rem;
+		margin-bottom: 20px;
+	}
+
+	.gift-amount {
+		font-family: 'Fredoka', sans-serif;
+		font-size: 2rem;
+		margin-bottom: 20px;
+		padding: 10px;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 10px;
+	}
+
+	.gift-to {
+		font-size: 1.2rem;
+		margin-bottom: 10px;
+	}
+
+	.gift-message {
+		font-style: italic;
+		font-size: 1.1rem;
+		margin-bottom: 20px;
+		padding: 15px;
+		background: rgba(255, 255, 255, 0.15);
+		border-radius: 10px;
+	}
+
+	.gift-from {
+		font-size: 1rem;
+		margin-bottom: 15px;
+	}
+
+	.gift-disclaimer {
+		font-size: 0.7rem;
+		opacity: 0.8;
+		line-height: 1.4;
+	}
+
+	/* Love Note Modal */
+	.love-note-overlay {
+		background: rgba(233, 30, 99, 0.3);
+	}
+
+	.love-note-modal {
+		background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+		max-width: 500px;
+		text-align: center;
+	}
+
+	.love-note-content h2 {
+		color: #c2185b;
+		margin-bottom: 25px;
+	}
+
+	.love-note-text {
+		font-size: 1.2rem;
+		color: #880e4f;
+		margin-bottom: 15px;
+		line-height: 1.6;
+	}
+
+	.love-note-signature {
+		font-size: 1.3rem;
+		font-style: italic;
+		color: #c2185b;
+		margin-top: 25px;
+		font-family: 'Fredoka', sans-serif;
+	}
+
+	.all-achievements {
+		text-align: center;
+		color: #4caf50;
+		font-weight: 600;
+		font-size: 1.1rem;
+		margin-top: 15px;
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	/* Chat Widget */
+	.chat-bubble {
+		position: fixed;
+		bottom: 30px;
+		right: 30px;
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, #4fc3f7, #03a9f4);
+		border: none;
+		font-size: 1.8rem;
+		cursor: pointer;
+		box-shadow: 0 5px 25px rgba(3, 169, 244, 0.5);
+		z-index: 999;
+		transition: all 0.3s ease;
+	}
+
+	.chat-bubble:hover {
+		transform: scale(1.1);
+	}
+
+	.chat-window {
+		position: fixed;
+		bottom: 100px;
+		right: 30px;
+		width: 350px;
+		height: 450px;
+		background: white;
+		border-radius: 20px;
+		box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+		z-index: 998;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		animation: slide-up 0.3s ease;
+	}
+
+	@keyframes slide-up {
+		from { opacity: 0; transform: translateY(20px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+
+	.chat-header {
+		background: linear-gradient(135deg, #4fc3f7, #03a9f4);
+		color: white;
+		padding: 15px 20px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-family: 'Fredoka', sans-serif;
+	}
+
+	.chat-close {
+		background: none;
+		border: none;
+		color: white;
+		font-size: 1.5rem;
+		cursor: pointer;
+	}
+
+	.chat-messages {
+		flex: 1;
+		padding: 15px;
+		overflow-y: auto;
+		background: #f5f5f5;
+	}
+
+	.chat-welcome {
+		text-align: center;
+		color: #90a4ae;
+		font-style: italic;
+		padding: 20px;
+	}
+
+	.chat-message {
+		margin-bottom: 10px;
+		padding: 12px 16px;
+		border-radius: 15px;
+		max-width: 80%;
+		animation: fade-in 0.3s ease;
+	}
+
+	.chat-message.user {
+		background: linear-gradient(135deg, #4fc3f7, #03a9f4);
+		color: white;
+		margin-left: auto;
+		border-bottom-right-radius: 5px;
+	}
+
+	.chat-message.rachel {
+		background: white;
+		color: #37474f;
+		border-bottom-left-radius: 5px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.typing-dots {
+		animation: blink 1s infinite;
+	}
+
+	@keyframes blink {
+		0%, 50% { opacity: 1; }
+		51%, 100% { opacity: 0.3; }
+	}
+
+	.chat-input-form {
+		display: flex;
+		padding: 15px;
+		background: white;
+		border-top: 1px solid #e0e0e0;
+	}
+
+	.chat-input {
+		flex: 1;
+		padding: 12px;
+		border: 2px solid #e0e0e0;
+		border-radius: 25px;
+		font-size: 0.95rem;
+		outline: none;
+	}
+
+	.chat-input:focus {
+		border-color: #4fc3f7;
+	}
+
+	.chat-send {
+		background: linear-gradient(135deg, #4fc3f7, #03a9f4);
+		color: white;
+		border: none;
+		padding: 12px 20px;
+		border-radius: 25px;
+		margin-left: 10px;
+		cursor: pointer;
+		font-weight: 600;
+	}
+
+	/* Night mode additions */
+	.page.night-mode .wheel-section,
+	.page.night-mode .detector-section,
+	.page.night-mode .blog-section,
+	.page.night-mode .gallery-section,
+	.page.night-mode .merch-section,
+	.page.night-mode .giftcard-section {
+		background: linear-gradient(180deg, #1a1a2e, #16213e);
+	}
+
+	.page.night-mode .wheel-section h2,
+	.page.night-mode .detector-section h2,
+	.page.night-mode .blog-section h2,
+	.page.night-mode .gallery-section h2,
+	.page.night-mode .merch-section h2,
+	.page.night-mode .giftcard-section h2 {
+		color: #4fc3f7;
+	}
+
+	.page.night-mode .detector-card,
+	.page.night-mode .blog-card,
+	.page.night-mode .gallery-card,
+	.page.night-mode .merch-card {
+		background: #16213e;
+		color: #e0e0e0;
+	}
+
 	/* Responsive */
 	@media (max-width: 768px) {
 		.hero {
@@ -2139,7 +3412,10 @@
 		.services-grid,
 		.facts-grid,
 		.team-grid,
-		.achievements-grid {
+		.achievements-grid,
+		.blog-grid,
+		.gallery-grid,
+		.merch-grid {
 			grid-template-columns: 1fr;
 		}
 
@@ -2162,6 +3438,26 @@
 
 		.modal {
 			padding: 25px;
+		}
+
+		.chat-window {
+			width: 90%;
+			right: 5%;
+			bottom: 90px;
+			height: 400px;
+		}
+
+		.chat-bubble {
+			bottom: 20px;
+			right: 20px;
+			width: 50px;
+			height: 50px;
+			font-size: 1.5rem;
+		}
+
+		.wheel-container {
+			width: 250px;
+			height: 250px;
 		}
 	}
 </style>
